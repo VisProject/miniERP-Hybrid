@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wescape group - Mini ERP</title>
+    
+    <!-- Inter Font Family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Layout Container -->
+    <div class="app-container">
+        <!-- Left Sidebar (Fixed) -->
+        <aside class="sidebar">
+            <!-- Logo Area - Replace with your actual logo image -->
+            <div class="sidebar-logo">
+                <img src="UI/logo black.png" alt="wescape group logo" class="logo-image">
+            </div>
+            
+            <h3 class="sidebar-title">Kategori Produk</h3>
+            <div class="category-list">
+                <label class="category-item active" data-category="semen">
+                    <input type="radio" name="category" value="semen" checked>
+                    <span class="radio-custom"></span>
+                    <span class="category-text">Semen</span>
+                </label>
+                <label class="category-item" data-category="batu-bata">
+                    <input type="radio" name="category" value="batu-bata">
+                    <span class="radio-custom"></span>
+                    <span class="category-text">Batu Bata</span>
+                </label>
+                <label class="category-item" data-category="genteng">
+                    <input type="radio" name="category" value="genteng">
+                    <span class="radio-custom"></span>
+                    <span class="category-text">Genteng</span>
+                </label>
+                <label class="category-item" data-category="interior">
+                    <input type="radio" name="category" value="interior">
+                    <span class="radio-custom"></span>
+                    <span class="category-text">Interior Rumah</span>
+                </label>
+                <label class="category-item" data-category="pintu">
+                    <input type="radio" name="category" value="pintu">
+                    <span class="radio-custom"></span>
+                    <span class="category-text">Pintu</span>
+                </label>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-content-area">
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Product Section -->
+                <div class="product-section">
+                    <!-- Product Grid -->
+                    <header class="product-header">
+                        <div class="search-section">
+                            <div class="search-container">
+                                <div class="search-icon">🔍</div>
+                                <input type="text" class="search-input" placeholder="Cari produk ..." id="searchInput">
+                            </div>
+                            <button class="search-btn" id="searchBtn">Cari</button>
+                        </div>
+                    </header>
+                    <div class="product-grid-container">
+                        <div class="products-grid" id="productsGrid">
+                            <!-- Product Cards will be dynamically generated -->
+                            <div class="product-card" data-product="semen-padang">
+                                <!-- Product Image Placeholder - Replace with actual product image -->
+                                <div class="product-image">
+                                    <img src="Asset/assets/img/products/semen-padang.png" alt="Semen Padang" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="image-placeholder" style="display: none;">
+                                        <div class="placeholder-text">Semen Padang<br>Image</div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-name">Semen Padang</h4>
+                                    <div class="product-price">Rp 165.000</div>
+                                    <div class="product-weight">55Kg / 1 Karung</div>
+                                </div>
+                            </div>
+
+                            <div class="product-card" data-product="semen-tiga-roda">
+                                <div class="product-image">
+                                    <img src="Asset/assets/img/products/semen-tiga-roda.png" alt="Semen Tiga Roda" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="image-placeholder" style="display: none;">
+                                        <div class="placeholder-text">Semen Tiga Roda<br>Image</div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-name">Semen Tiga Roda</h4>
+                                    <div class="product-price">Rp 135.000</div>
+                                    <div class="product-weight">55Kg / 1 Karung</div>
+                                </div>
+                            </div>
+
+                            <div class="product-card" data-product="semen-baturaja">
+                                <div class="product-image">
+                                    <img src="Asset/assets/img/products/semen-baturaja.png" alt="Semen Baturaja" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="image-placeholder" style="display: none;">
+                                        <div class="placeholder-text">Semen Baturaja<br>Image</div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-name">Semen Baturaja</h4>
+                                    <div class="product-price">Rp 115.000</div>
+                                    <div class="product-weight">55Kg / 1 Karung</div>
+                                </div>
+                            </div>
+
+                            <div class="product-card selected" data-product="semen-rajawali">
+                                <div class="product-image">
+                                    <img src="Asset/assets/img/products/semen-rajawali.png" alt="Semen Rajawali" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="image-placeholder" style="display: none;">
+                                        <div class="placeholder-text">Semen Rajawali<br>Image</div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-name">Semen Rajawali</h4>
+                                    <div class="product-price">Rp 105.000</div>
+                                    <div class="product-weight">55Kg / 1 Karung</div>
+                                </div>
+                            </div>
+
+                            <div class="product-card" data-product="semen-gresik">
+                                <div class="product-image">
+                                    <img src="Asset/assets/img/products/semen-gresik.png" alt="Semen Gresik" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="image-placeholder" style="display: none;">
+                                        <div class="placeholder-text">Semen Gresik<br>Image</div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-name">Semen Gresik</h4>
+                                    <div class="product-price">Rp 125.000</div>
+                                    <div class="product-weight">55Kg / 1 Karung</div>
+                                </div>
+                            </div>
+
+                            <div class="product-card" data-product="semen-holcim">
+                                <div class="product-image">
+                                    <img src="Asset/assets/img/products/semen-holcim.png" alt="Semen Holcim" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="image-placeholder" style="display: none;">
+                                        <div class="placeholder-text">Semen Holcim<br>Image</div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-name">Semen Holcim</h4>
+                                    <div class="product-price">Rp 145.000</div>
+                                    <div class="product-weight">55Kg / 1 Karung</div>
+                                </div>
+                            </div>
+
+                            <div class="product-card" data-product="semen-indocement">
+                                <div class="product-image">
+                                    <img src="Asset/assets/img/products/semen-indocement.png" alt="Semen Indocement" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="image-placeholder" style="display: none;">
+                                        <div class="placeholder-text">Semen Indocement<br>Image</div>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="product-name">Semen Indocement</h4>
+                                    <div class="product-price">Rp 155.000</div>
+                                    <div class="product-weight">55Kg / 1 Karung</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination-container">
+                            <div class="pagination-info">
+                                Showing 1 to 7 of 100 entries
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="page-btn" data-page="first"><<</button>
+                                <button class="page-btn" data-page="prev"><</button>
+                                <button class="page-btn active" data-page="1">1</button>
+                                <button class="page-btn" data-page="2">2</button>
+                                <button class="page-btn" data-page="3">3</button>
+                                <button class="page-btn" data-page="4">4</button>
+                                <button class="page-btn" data-page="5">5</button>
+                                <button class="page-btn" data-page="...">...</button>
+                                <button class="page-btn" data-page="15">15</button>
+                                <button class="page-btn" data-page="next">></button>
+                                <button class="page-btn" data-page="last">>></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Section (Right side) -->
+                <aside class="cart-sidebar">
+                    <div class="cart-header">
+                        <h3 class="sidebar-title">Keranjang</h3>
+                        <span class="cart-badge" id="cartBadge">1</span>
+                    </div>
+                    
+                    <div class="cart-content" id="cartContent">
+                        <!-- Cart Item -->
+                        <div class="cart-item" data-product="semen-rajawali">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">Semen Rajawali</div>
+                                <div class="cart-item-price">Rp 105.000</div>
+                                <div class="cart-item-unit">/ 1 Karung</div>
+                            </div>
+                            <div class="cart-item-controls">
+                                <button class="quantity-btn" data-action="decrease">-</button>
+                                <span class="quantity-display" id="quantityDisplay">1</span>
+                                <button class="quantity-btn" data-action="increase">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Sub Total</span>
+                            <span class="summary-value" id="subTotal">Rp 105.000</span>
+                            <span class="summary-items" id="itemCount">1 Item</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">PPN</span>
+                            <span class="summary-value" id="taxAmount">Rp 11.550</span>
+                            <span class="summary-items">11%</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span class="summary-label">Total</span>
+                            <span class="summary-value total-amount" id="totalAmount">Rp 116.550</span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <button class="checkout-btn" id="checkoutBtn">Bayar</button>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>© 2025, all right reserved.</span>
+            </div>
+            <div class="footer-right">
+                <a href="https://wescape.com" class="footer-link">wescape.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="assets/js/inventory-service.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

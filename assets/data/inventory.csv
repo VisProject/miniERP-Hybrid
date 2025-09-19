@@ -1,0 +1,16 @@
+id,name,price,category,weight,image,stock
+semen-padang,Semen Padang,165000,semen,55Kg / 1 Karung,Asset/assets/img/products/semen-padang.png,50
+semen-tiga-roda,Semen Tiga Roda,135000,semen,55Kg / 1 Karung,Asset/assets/img/products/semen-tiga-roda.png,30
+semen-baturaja,Semen Baturaja,115000,semen,55Kg / 1 Karung,Asset/assets/img/products/semen-baturaja.png,25
+semen-rajawali,Semen Rajawali,105000,semen,55Kg / 1 Karung,Asset/assets/img/products/semen-rajawali.png,40
+semen-gresik,Semen Gresik,125000,semen,55Kg / 1 Karung,Asset/assets/img/products/semen-gresik.png,35
+semen-holcim,Semen Holcim,145000,semen,55Kg / 1 Karung,Asset/assets/img/products/semen-holcim.png,20
+semen-indocement,Semen Indocement,155000,semen,55Kg / 1 Karung,Asset/assets/img/products/semen-indocement.png,15
+batu-bata-merah,Batu Bata Merah,2500,batu-bata,1 Pcs,Asset/assets/img/products/batu-bata-merah.png,1000
+batu-bata-beton,Batu Bata Beton,3000,batu-bata,1 Pcs,Asset/assets/img/products/batu-bata-beton.png,800
+genteng-beton,Genteng Beton,15000,genteng,1 Pcs,Asset/assets/img/products/genteng-beton.png,200
+genteng-metal,Genteng Metal,25000,genteng,1 Pcs,Asset/assets/img/products/genteng-metal.png,150
+pintu-kayu,Pintu Kayu,450000,pintu,1 Unit,Asset/assets/img/products/pintu-kayu.png,10
+pintu-aluminium,Pintu Aluminium,650000,pintu,1 Unit,Asset/assets/img/products/pintu-aluminium.png,8
+interior-lantai,Lantai Vinyl,85000,interior,1 m²,Asset/assets/img/products/lantai-vinyl.png,100
+interior-wallpaper,Wallpaper,45000,interior,1 Roll,Asset/assets/img/products/wallpaper.png,50
