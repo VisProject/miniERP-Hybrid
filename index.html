@@ -242,6 +242,70 @@
         </div>
     </div>
 
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentOverlay" style="display: none;"></div>
+    <div class="payment-modal" id="paymentModal" style="display: none;">
+        <div class="payment-modal__header">
+            <h3 class="payment-modal__title">Pembayaran</h3>
+            <button class="payment-modal__close" id="paymentCloseBtn" aria-label="Tutup">✕</button>
+        </div>
+
+        <!-- Body: two views (entry vs confirmation) -->
+        <div class="payment-modal__body">
+            <!-- Entry View -->
+            <div id="paymentContentView">
+                <div class="payment-modal__section total-section">
+                    <div class="total-section__label">Total Bayar</div>
+                    <div class="total-section__value" id="paymentTotal">Rp 0</div>
+                </div>
+                <div class="payment-modal__section">
+                    <div class="section-label">Metode bayar</div>
+                    <div class="method-switcher" role="tablist">
+                        <button class="method-btn active" data-method="cash" id="methodCash" role="tab">Cash</button>
+                        <button class="method-btn" data-method="qris" id="methodQris" role="tab">QRIS</button>
+                        <button class="method-btn" data-method="edc" id="methodEdc" role="tab">EDC</button>
+                    </div>
+                </div>
+                <div class="payment-modal__section" id="methodViewCash">
+                    <label for="cashPaidInput" class="input-label">Isi jumlah yang dibayarkan</label>
+                    <input type="text" inputmode="numeric" class="text-input" id="cashPaidInput" placeholder="Rp 0" autocomplete="off">
+                    <div class="change-box">
+                        <div class="change-label">Kembalian</div>
+                        <div class="change-value" id="cashChangeOutput">Rp 0</div>
+                    </div>
+                </div>
+                <div class="payment-modal__section" id="methodViewQris" style="display: none;">
+                    <div class="qris-placeholder">
+                        <img src="UI/5f7c6da47a380-qr-code-dana.jpg" alt="QRIS placeholder" id="qrisPlaceholder">
+                        <div class="qris-text">QRIS akan ditampilkan di sini</div>
+                    </div>
+                </div>
+                <div class="payment-modal__section" id="methodViewEdc" style="display: none;">
+                    <label for="edcTransInput" class="input-label">Masukan nomor transaksi EDC</label>
+                    <input type="number" inputmode="numeric" class="text-input" id="edcTransInput" placeholder="Nomor transaksi">
+                </div>
+            </div>
+
+            <!-- Confirmation View -->
+            <div id="paymentConfirmView" style="display: none;">
+                <div class="payment-modal__section total-section">
+                    <div class="total-section__label">No Transaksi</div>
+                    <div class="total-section__value" id="trxNumber">TRX-</div>
+                </div>
+                <div class="payment-modal__section confirm-transaction">
+                    <div class="confirm-illustration">
+                        <img src="UI/undraw_add-files_d04y.svg" alt="Konfirmasi pembayaran" id="confirmIllustration">
+                    </div>
+                    <div class="confirm-message">Terima kasih, pembayaranmu telah tersimpan</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-modal__footer">
+            <button class="primary-btn" id="paymentSaveBtn">Simpan</button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">

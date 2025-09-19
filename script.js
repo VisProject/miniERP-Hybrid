@@ -86,37 +86,16 @@ class MiniERP {
     
     async handleCheckout() {
         const cart = this.inventoryService.getCart();
-        
         if (cart.length === 0) {
             alert('Keranjang kosong! Silakan pilih produk terlebih dahulu.');
             return;
         }
-        
-        const subTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const taxAmount = Math.round(subTotal * 0.11);
-        const finalTotal = subTotal + taxAmount;
-        
-        const orderSummary = cart.map(item => 
-            `${item.name} x${item.quantity} = Rp ${this.formatPrice(item.price * item.quantity)}`
-        ).join('\n');
-        
-        const confirmation = confirm(
-            `Konfirmasi Pembayaran:\n\n${orderSummary}\n\nSub Total: Rp ${this.formatPrice(subTotal)}\nPPN (11%): Rp ${this.formatPrice(taxAmount)}\nTotal: Rp ${this.formatPrice(finalTotal)}\n\nLanjutkan pembayaran?`
-        );
-        
-        if (confirmation) {
-            try {
-                showLoading(document.getElementById('checkoutBtn'));
-                const result = await this.inventoryService.checkout(cart);
-                alert('Pembayaran berhasil! Terima kasih atas pembelian Anda.');
-                console.log('Checkout successful:', result);
-            } catch (error) {
-                alert('Pembayaran gagal: ' + error.message);
-                console.error('Checkout failed:', error);
-            } finally {
-                hideLoading(document.getElementById('checkoutBtn'));
-            }
-        }
+
+        // Pull total from the UI and show modal
+        const totalText = document.querySelector('.summary-value.total-amount')?.textContent || 'Rp 0';
+        const paymentTotal = document.getElementById('paymentTotal');
+        if (paymentTotal) paymentTotal.textContent = totalText;
+        openPaymentModal();
     }
     
     handlePagination(page) {
@@ -161,6 +140,165 @@ function hideLoading(element) {
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new MiniERP();
+
+    // Payment modal interactions
+    const overlay = document.getElementById('paymentOverlay');
+    const modal = document.getElementById('paymentModal');
+    const closeBtn = document.getElementById('paymentCloseBtn');
+    const saveBtn = document.getElementById('paymentSaveBtn');
+    const methodButtons = document.querySelectorAll('.method-btn');
+    const methodViews = {
+        cash: document.getElementById('methodViewCash'),
+        qris: document.getElementById('methodViewQris'),
+        edc: document.getElementById('methodViewEdc')
+    };
+    const contentView = document.getElementById('paymentContentView');
+    const confirmView = document.getElementById('paymentConfirmView');
+    const trxNumberEl = document.getElementById('trxNumber');
+
+    // Expose helpers globally
+    window.openPaymentModal = function openPaymentModal() {
+        if (overlay) overlay.style.display = 'block';
+        if (modal) modal.style.display = 'block';
+        // default to cash
+        setActiveMethod('cash');
+        updateChange();
+        switchToEntryView();
+    };
+
+    function closePaymentModal() {
+        if (overlay) overlay.style.display = 'none';
+        if (modal) modal.style.display = 'none';
+        resetEntryState();
+    }
+
+    function setActiveMethod(method) {
+        methodButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.method === method);
+        });
+        Object.keys(methodViews).forEach(key => {
+            if (methodViews[key]) methodViews[key].style.display = key === method ? 'block' : 'none';
+        });
+    }
+
+    function parseRupiah(text) {
+        const digits = (text || '').toString().replace(/[^0-9]/g, '');
+        return Number(digits || 0);
+    }
+
+    function formatRupiahNumberOnly(num) {
+        return new Intl.NumberFormat('id-ID').format(Math.max(0, Math.floor(num)));
+    }
+
+    function formatRupiahWithPrefix(num) {
+        return 'Rp ' + formatRupiahNumberOnly(num);
+    }
+
+    function updateChange() {
+        const totalText = document.querySelector('.summary-value.total-amount')?.textContent || 'Rp 0';
+        const total = parseRupiah(totalText);
+        const paid = parseRupiah(document.getElementById('cashPaidInput')?.value || '0');
+        const changeEl = document.getElementById('cashChangeOutput');
+        if (changeEl) changeEl.textContent = formatRupiahWithPrefix(paid - total);
+    }
+
+    // Transaction number generator with session counter
+    let trxCounter = 0;
+    function generateTrxNumber() {
+        trxCounter += 1;
+        const now = new Date();
+        const dd = String(now.getDate()).padStart(2, '0');
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const yyyy = String(now.getFullYear());
+        const seq = String(trxCounter).padStart(5, '0');
+        return `TRX-${dd}${mm}${yyyy}${seq}`;
+    }
+
+    function switchToEntryView() {
+        if (!contentView || !confirmView) return;
+        confirmView.style.display = 'none';
+        contentView.style.display = 'block';
+        if (saveBtn) saveBtn.textContent = 'Simpan';
+    }
+
+    function switchToConfirmView() {
+        if (!contentView || !confirmView) return;
+        contentView.style.display = 'none';
+        confirmView.style.display = 'block';
+        if (saveBtn) saveBtn.textContent = 'Tutup';
+        if (trxNumberEl) trxNumberEl.textContent = generateTrxNumber();
+    }
+
+    function resetEntryState() {
+        const cashInput = document.getElementById('cashPaidInput');
+        if (cashInput) cashInput.value = '';
+        const changeEl = document.getElementById('cashChangeOutput');
+        if (changeEl) changeEl.textContent = 'Rp 0';
+        setActiveMethod('cash');
+        switchToEntryView();
+    }
+
+    // Events
+    if (overlay) overlay.addEventListener('click', closePaymentModal);
+    if (closeBtn) closeBtn.addEventListener('click', closePaymentModal);
+    if (saveBtn) saveBtn.addEventListener('click', () => {
+        // Toggle between entry and confirmation
+        if (confirmView && confirmView.style.display === 'block') {
+            closePaymentModal();
+        } else {
+            switchToConfirmView();
+        }
+    });
+
+    methodButtons.forEach(btn => {
+        btn.addEventListener('click', () => setActiveMethod(btn.dataset.method));
+    });
+
+    const cashInput = document.getElementById('cashPaidInput');
+    if (cashInput) {
+        // Initialize with prefix
+        if (!cashInput.value) cashInput.value = 'Rp 0';
+
+        function setCursorToEnd(el) {
+            requestAnimationFrame(() => {
+                const len = el.value.length;
+                el.setSelectionRange(len, len);
+            });
+        }
+
+        cashInput.addEventListener('focus', () => {
+            if (!/^Rp\s/.test(cashInput.value)) {
+                cashInput.value = 'Rp 0';
+                setCursorToEnd(cashInput);
+            }
+        });
+
+        cashInput.addEventListener('keydown', (e) => {
+            const prefix = 'Rp ';
+            const value = cashInput.value;
+            const selectionStart = cashInput.selectionStart || 0;
+            // Prevent backspace/delete from removing the prefix
+            if ((e.key === 'Backspace' && selectionStart <= prefix.length) ||
+                (e.key === 'Delete' && selectionStart < prefix.length)) {
+                e.preventDefault();
+                setCursorToEnd(cashInput);
+            }
+            // Block non-numeric keys except control/navigation keys
+            const allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Tab'];
+            if (e.ctrlKey || e.metaKey || e.altKey) return; // allow combos
+            if (allowed.includes(e.key)) return;
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        cashInput.addEventListener('input', () => {
+            const raw = parseRupiah(cashInput.value);
+            cashInput.value = 'Rp ' + (raw === 0 ? '0' : formatRupiahNumberOnly(raw));
+            setCursorToEnd(cashInput);
+            updateChange();
+        });
+    }
 });
 
 // Export for potential module usage

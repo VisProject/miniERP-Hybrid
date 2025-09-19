@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - wescape group</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+    <!-- Background + overlay -->
+    <div class="auth-background" style="--auth-bg:url('UI/bg wave.png');"></div>
+    <div class="auth-overlay"></div>
+
+    <!-- Page content -->
+    <main class="auth-container">
+        <section class="auth-left">
+            <div class="auth-logo">
+                <img src="UI/Layer 1.png" alt="wescape group logo">
+            </div>
+            <!-- Left: Carousel text -->
+            <section class="auth-carousel">
+            <div class="auth-track" id="authTrack">
+            <div class="auth-slide">
+                <h1 class="auth-slide-title">Tech & Branding</h1>
+                <p class="auth-slide-sub">Wescape is a dedicated partner in technology and branding, committed to helping businesses thrive — from SMEs to startups.</p>
+            </div>
+            <div class="auth-slide">
+                <h1 class="auth-slide-title">Beyond Digital</h1>
+                <p class="auth-slide-sub">We believe digital services are not only about coding, systems, and interfaces — but also about building brand dimensions that resonate.</p>
+            </div>
+            <div class="auth-slide">
+                <h1 class="auth-slide-title">Smart Growth</h1>
+                <p class="auth-slide-sub">We deliver modular, scalable solutions combined with brand consulting, so your business runs faster and grows smarter.</p>
+            </div>
+            </div>
+            <div class="auth-indicators" id="authIndicators">
+                <span class="ind-dot active" data-index="0"></span>
+                <span class="ind-dot" data-index="1"></span>
+                <span class="ind-dot" data-index="2"></span>
+            </div>
+            </section>
+        </section>
+
+        <!-- Right: Login Card -->
+        <section class="auth-card">
+            <div class="auth-card-inner">
+                <div class="auth-card-header">
+                    <div class="auth-eyebrow">WELCOME TO WESCAPE</div>
+                    <h2 class="auth-title">Log In to your Account</h2>
+                </div>
+                <form id="loginForm" novalidate>
+                    <div class="form-field">
+                        <label for="loginEmail">Email</label>
+                        <input id="loginEmail" name="email" type="email" placeholder="johnsondoe@nomail.com" autocomplete="username" autofocus>
+                        <div class="field-error" id="emailError"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="loginPassword">Password</label>
+                        <div class="password-wrapper">
+                            <input id="loginPassword" name="password" type="password" placeholder="••••••••••••" autocomplete="current-password">
+                            <button type="button" class="eye-btn" id="togglePassword" aria-label="Show password" title="Show/Hide"></button>
+                        </div>
+                        <div class="field-error" id="passwordError"></div>
+                    </div>
+                    <button class="primary-btn auth-submit" id="loginSubmit" type="submit" disabled>LOGIN</button>
+                    <div class="field-error" id="authError" style="text-align:center; margin-top:10px;"></div>                    
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    (function() {
+        const track = document.getElementById('authTrack');
+        const slides = Array.from(track.querySelectorAll('.auth-slide'));
+        const dots = Array.from(document.querySelectorAll('.auth-indicators .ind-dot'));
+        let index = 0;
+        function updateIndicators(i){
+            dots.forEach((d, di) => d.classList.toggle('active', di === i));
+        }
+        function slideTo(i){
+            index = (i + slides.length) % slides.length;
+            const offset = -index * 100;
+            track.style.transform = `translateX(${offset}%)`;
+            updateIndicators(index);
+        }
+        let timer = setInterval(() => slideTo(index + 1), 4000);
+        function resetTimer(){ clearInterval(timer); timer = setInterval(() => slideTo(index + 1), 4000); }
+        dots.forEach(d => d.addEventListener('click', () => { slideTo(Number(d.dataset.index)||0); resetTimer(); }));
+
+        // Password toggle
+        const pwd = document.getElementById('loginPassword');
+        const toggle = document.getElementById('togglePassword');
+        toggle.addEventListener('click', () => {
+            const isPassword = pwd.type === 'password';
+            pwd.type = isPassword ? 'text' : 'password';
+            toggle.classList.toggle('showing', isPassword);
+            pwd.focus();
+        });
+
+        // Validation & submit
+        const form = document.getElementById('loginForm');
+        const email = document.getElementById('loginEmail');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const authError = document.getElementById('authError');
+        const submitBtn = document.getElementById('loginSubmit');
+
+        function isValidEmail(v){
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        }
+
+        function clearErrors(){ emailError.textContent=''; passwordError.textContent=''; authError.textContent=''; }
+
+        function updateButtonState(){
+            const hasEmail = email.value.trim().length > 0 && isValidEmail(email.value.trim());
+            const hasPassword = document.getElementById('loginPassword').value.trim().length > 0;
+            const enabled = hasEmail && hasPassword;
+            submitBtn.disabled = !enabled;
+        }
+
+        email.addEventListener('input', updateButtonState);
+        document.getElementById('loginPassword').addEventListener('input', updateButtonState);
+        updateButtonState();
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearErrors();
+            let valid = true;
+            if (!isValidEmail(email.value.trim())) { emailError.textContent = 'Masukan email yang valid.'; valid = false; }
+            if (!document.getElementById('loginPassword').value.trim()) { passwordError.textContent = 'Password wajib diisi.'; valid = false; }
+            if (valid) {
+                const inputEmail = email.value.trim();
+                const inputPassword = document.getElementById('loginPassword').value;
+                const OK_EMAIL = 'wescape.group@gmail.com';
+                const OK_PASS = 'W3scape9roup!';
+                if (inputEmail === OK_EMAIL && inputPassword === OK_PASS) {
+                    window.location.href = 'index.html';
+                } else {
+                    authError.textContent = 'Email atau password salah';
+                }
+            }
+        });
+
+        // Enter on password submits
+        document.getElementById('loginPassword').addEventListener('keydown', (e)=>{
+            if (e.key === 'Enter') form.requestSubmit();
+        });
+    })();
+    </script>
+</body>
+</html>
+
+

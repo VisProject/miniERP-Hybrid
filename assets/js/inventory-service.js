@@ -374,7 +374,13 @@ class InventoryService {
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.name}</div>
                         <div class="cart-item-price">Rp ${this.formatPrice(item.price)}</div>
-                        <div class="cart-item-unit">/ 1 ${item.weight.split(' / ')[1] || 'Unit'}</div>
+                        <div class="cart-item-unit">/ ${(() => {
+                            const weightText = item.weight || '';
+                            if (weightText.includes(' / ')) {
+                                return weightText.split(' / ')[1];
+                            }
+                            return weightText || 'Unit';
+                        })()}</div>
                     </div>
                     <div class="cart-item-controls">
                         <button class="quantity-btn" data-action="decrease" data-sku="${item.id}">-</button>
